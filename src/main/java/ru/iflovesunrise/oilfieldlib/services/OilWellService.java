@@ -1,17 +1,18 @@
 package ru.iflovesunrise.oilfieldlib.services;
 
-import ru.iflovesunrise.oilfieldlib.dto.OilWellResponse;
+
+import ru.iflovesunrise.oilfieldlib.dto.OilfieldLibResponse;
 
 public interface OilWellService {
-    OilWellResponse getAll();
+    OilfieldLibResponse getAll();
 
-    OilWellResponse getById(int id);
+    OilfieldLibResponse getById(int id);
 
-    OilWellResponse create(int number, String code, int oilfieldId, int debit);
+    OilfieldLibResponse create(int number, String code, int oilfieldId, Integer debit);
 
-    OilWellResponse update(int id, int number, String code, int oilfieldId, int debit);
+    OilfieldLibResponse update(int id, Integer number, String code, Integer debit);
 
-    OilWellResponse deleteAll();
+    OilfieldLibResponse deleteAll();
 
-    OilWellResponse deleteById(int id);
+    OilfieldLibResponse deleteById(int id);
 }

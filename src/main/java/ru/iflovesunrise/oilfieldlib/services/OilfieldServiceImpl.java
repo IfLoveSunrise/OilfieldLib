@@ -4,14 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import ru.iflovesunrise.oilfieldlib.dto.OilfieldResponse;
+import ru.iflovesunrise.oilfieldlib.dto.OilfieldLibResponse;
 import ru.iflovesunrise.oilfieldlib.model.Oilfield;
 import ru.iflovesunrise.oilfieldlib.model.OilfieldStage;
 import ru.iflovesunrise.oilfieldlib.repositories.OilfieldRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -21,31 +20,31 @@ import java.util.Optional;
 public class OilfieldServiceImpl implements OilfieldService {
 
     private final OilfieldRepository oilfieldRepository;
-    private final OilfieldResponse oilfieldResponse = new OilfieldResponse();
+    private final OilfieldLibResponse oilfieldLibResponse = new OilfieldLibResponse();
     private static final String DATE_REGEX = "^\\d{4}-\\d{2}-\\d{2}$";
 
     @Override
-    public OilfieldResponse getAll() {
+    public OilfieldLibResponse getAll() {
         List<Oilfield> oilfields = oilfieldRepository.findAll();
         if (oilfields.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Oilfields have not been created");
         }
-        oilfieldResponse.setResult("Oilfields found");
-        oilfieldResponse.setOilfields(oilfields);
-        return oilfieldResponse;
+        oilfieldLibResponse.setResult("Oilfields found");
+        oilfieldLibResponse.setObjects(Collections.singletonList(oilfields));
+        return oilfieldLibResponse;
     }
 
     @Override
-    public OilfieldResponse getById(int id) {
+    public OilfieldLibResponse getById(int id) {
         Optional<Oilfield> oilfieldOptional = oilfieldRepository.findById(id);
         if (oilfieldOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        oilfieldResponse.setResult("Oilfield found");
-        oilfieldResponse.setOilfields(Collections.singletonList(oilfieldOptional.get()));
-        return oilfieldResponse;
+        oilfieldLibResponse.setResult("Oilfield found");
+        oilfieldLibResponse.setObjects(Collections.singletonList(oilfieldOptional.get()));
+        return oilfieldLibResponse;
     }
 
     @Override
-    public OilfieldResponse create(String name, String foundationDate) {
+    public OilfieldLibResponse create(String name, String foundationDate) {
         if (name == null || name.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The name cannot be empty");
         }
@@ -64,14 +63,13 @@ public class OilfieldServiceImpl implements OilfieldService {
         oilfield.setStage(OilfieldStage.PLANNED);
         oilfield.setLastUpdateTime(LocalDateTime.now());
         oilfieldRepository.save(oilfield);
-        List<Oilfield> oilfields = new ArrayList<>(Collections.singleton(oilfield));
-        oilfieldResponse.setResult("Created");
-        oilfieldResponse.setOilfields(oilfields);
-        return oilfieldResponse;
+        oilfieldLibResponse.setResult("Created");
+        oilfieldLibResponse.setObjects(Collections.singletonList(oilfield));
+        return oilfieldLibResponse;
     }
 
     @Override
-    public OilfieldResponse update(int id, String name, String foundationDate) {
+    public OilfieldLibResponse update(int id, String name, String foundationDate) {
         Optional<Oilfield> oilfieldOptional = oilfieldRepository.findById(id);
         if (oilfieldOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Oilfield not found");
@@ -81,31 +79,31 @@ public class OilfieldServiceImpl implements OilfieldService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid date format. Example: 2000-12-30");
         }
         Oilfield oilfield = oilfieldOptional.get();
-        oilfieldResponse.setResult(oilfield.getName().concat(" is updated"));
+        oilfieldLibResponse.setResult(oilfield.getName().concat(" is updated"));
         if (name != null && !name.equals("")) oilfield.setName(name);
         if (foundationDate != null) oilfield.setFoundationDate(LocalDate.parse(foundationDate));
         oilfield.setLastUpdateTime(LocalDateTime.now());
         oilfieldRepository.save(oilfield);
-        oilfieldResponse.setOilfields(Collections.singletonList(oilfield));
-        return oilfieldResponse;
+        oilfieldLibResponse.setObjects(Collections.singletonList(oilfield));
+        return oilfieldLibResponse;
     }
 
     @Override
-    public OilfieldResponse deleteAll() {
+    public OilfieldLibResponse deleteAll() {
         oilfieldRepository.deleteAll();
-        oilfieldResponse.setResult("All oilfields have been removed");
-        return oilfieldResponse;
+        oilfieldLibResponse.setResult("All oilfields have been removed");
+        return oilfieldLibResponse;
     }
 
     @Override
-    public OilfieldResponse deleteById(int id) {
+    public OilfieldLibResponse deleteById(int id) {
         Optional<Oilfield> oilfieldOptional = oilfieldRepository.findById(id);
         if (oilfieldOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Oilfield not found");
         }
-        oilfieldResponse.setResult("Oilfield ".concat(oilfieldOptional.get().getName())
+        oilfieldLibResponse.setResult("Oilfield ".concat(oilfieldOptional.get().getName())
                 .concat(" have been removed"));
         oilfieldRepository.deleteById(id);
-        return oilfieldResponse;
+        return oilfieldLibResponse;
     }
 }

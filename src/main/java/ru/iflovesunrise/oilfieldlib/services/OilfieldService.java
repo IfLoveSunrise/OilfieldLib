@@ -1,17 +1,17 @@
 package ru.iflovesunrise.oilfieldlib.services;
 
-import ru.iflovesunrise.oilfieldlib.dto.OilfieldResponse;
+import ru.iflovesunrise.oilfieldlib.dto.OilfieldLibResponse;
 
 public interface OilfieldService {
-    OilfieldResponse getAll();
+    OilfieldLibResponse getAll();
 
-    OilfieldResponse getById(int id);
+    OilfieldLibResponse getById(int id);
 
-    OilfieldResponse create(String name, String foundationDate);
+    OilfieldLibResponse create(String name, String foundationDate);
 
-    OilfieldResponse update(int id, String name, String foundationDate);
+    OilfieldLibResponse update(int id, String name, String foundationDate);
 
-    OilfieldResponse deleteAll();
+    OilfieldLibResponse deleteAll();
 
-    OilfieldResponse deleteById(int id);
+    OilfieldLibResponse deleteById(int id);
 }

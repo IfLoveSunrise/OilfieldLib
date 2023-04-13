@@ -1,5 +1,6 @@
 package ru.iflovesunrise.oilfieldlib.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,17 +20,18 @@ public class OilWell {
     private int id;
 
     @Column(nullable = false)
-    private int number;
+    private Integer number;
 
     @Column(columnDefinition = "VARCHAR(255)")
     private String code;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Oilfield oilfield;
 
     @Column
-    private long debit;
+    private Integer debit;
 
     @Column
     private boolean active;
