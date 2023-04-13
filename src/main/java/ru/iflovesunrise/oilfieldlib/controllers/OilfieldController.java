@@ -33,7 +33,7 @@ public class OilfieldController {
     @PutMapping("/update/{id}")
     public ResponseEntity<OilfieldResponse> update(
             @PathVariable int id,
-            @RequestParam(value = "name") String name,
+            @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "foundationDate", required = false) String foundationDate) {
         return ResponseEntity.ok(oilfieldService.update(id, name, foundationDate));
     }
