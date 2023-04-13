@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class OilfieldlibApplication {
+public class OilfieldLibApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(OilfieldlibApplication.class, args);
+		SpringApplication.run(OilfieldLibApplication.class, args);
 	}
 
 }
