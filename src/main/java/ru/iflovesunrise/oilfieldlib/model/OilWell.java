@@ -22,7 +22,7 @@ public class OilWell {
     private int number;
 
     @Column(columnDefinition = "VARCHAR(255)")
-    private String purpose;
+    private String code;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
