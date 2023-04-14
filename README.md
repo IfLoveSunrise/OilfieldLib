@@ -68,11 +68,18 @@ lombok - поддержка порядка в коде посредством у
 
 Скачайте файл конфигурации application.yaml
 
-Установите в файле конфигурации свои логин/пароль MySQL
+Установите в файле конфигурации свои логин/пароль MySQL.
 
 ![image](https://user-images.githubusercontent.com/120375170/232064520-4f3c6c16-1654-4786-be91-42507a79b3d9.png)
 
-Строка для запуска приложения: java -jar oilfieldlib-0.0.1-SNAPSHOT.jar
+
+Внимание! ![image](https://user-images.githubusercontent.com/120375170/232072131-98055812-c77c-4402-847c-f3252f10cb05.png)
+Параметр необходимо удалить, если беспокоитесь о конфиденциальности информации об ошибках приложения.
+
+Строка для запуска приложения: java -jar oilfieldlib-0.0.1-SNAPSHOT.jar --application.yaml
 
 ### Инструкция по работе с приложением
+
+![image](https://user-images.githubusercontent.com/120375170/232073638-062df8b3-c2a3-4d53-bb74-b126619b8c9e.png)
+
 
