@@ -1,0 +1,482 @@
+{
+	"info": {
+		"_postman_id": "9302e23b-d286-49c4-ab84-b03727eb93b7",
+		"name": "OilfieldLibRequests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26898205"
+	},
+	"item": [
+		{
+			"name": "create oilfield 1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/oilfield/create?name=Московское&foundationDate=2000-12-30",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oilfield",
+						"create"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Московское"
+						},
+						{
+							"key": "foundationDate",
+							"value": "2000-12-30"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create oilfield 2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/oilfield/create?name=Минское&foundationDate=1999-11-28",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oilfield",
+						"create"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Минское"
+						},
+						{
+							"key": "foundationDate",
+							"value": "1999-11-28"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update oilfield id_2",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/oilfield/update/2?name=Великоминское&foundationDate=1989-01-02",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oilfield",
+						"update",
+						"2"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Великоминское"
+						},
+						{
+							"key": "foundationDate",
+							"value": "1989-01-02"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create oilfield 3",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/oilfield/create?name=Samarskoe&foundationDate=2004-08-20",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oilfield",
+						"create"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Samarskoe"
+						},
+						{
+							"key": "foundationDate",
+							"value": "2004-08-20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create oil well 1 id_oilfield_1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/oilWell/create?number=155&code=Средняя&oilfieldId=1&debit=200",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oilWell",
+						"create"
+					],
+					"query": [
+						{
+							"key": "number",
+							"value": "155"
+						},
+						{
+							"key": "code",
+							"value": "Средняя"
+						},
+						{
+							"key": "oilfieldId",
+							"value": "1"
+						},
+						{
+							"key": "debit",
+							"value": "200"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create oil well 2 id_oilfield_1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/oilWell/create?number=155&code=Средняя&oilfieldId=1&debit=200",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oilWell",
+						"create"
+					],
+					"query": [
+						{
+							"key": "number",
+							"value": "155"
+						},
+						{
+							"key": "code",
+							"value": "Средняя"
+						},
+						{
+							"key": "oilfieldId",
+							"value": "1"
+						},
+						{
+							"key": "debit",
+							"value": "200"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update oil well id_1",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/oilWell/update/1?number=145&code=Глубокая&debit=0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oilWell",
+						"update",
+						"1"
+					],
+					"query": [
+						{
+							"key": "number",
+							"value": "145"
+						},
+						{
+							"key": "code",
+							"value": "Глубокая"
+						},
+						{
+							"key": "debit",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create oil well 3 id_oilfield_2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/oilWell/create?number=200&code=Средняя&oilfieldId=2&debit=99",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oilWell",
+						"create"
+					],
+					"query": [
+						{
+							"key": "number",
+							"value": "200"
+						},
+						{
+							"key": "code",
+							"value": "Средняя"
+						},
+						{
+							"key": "oilfieldId",
+							"value": "2"
+						},
+						{
+							"key": "debit",
+							"value": "99"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create oil well 4 id_oilfield_2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/oilWell/create?number=400&code=Средняя&oilfieldId=2&debit=18",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oilWell",
+						"create"
+					],
+					"query": [
+						{
+							"key": "number",
+							"value": "400"
+						},
+						{
+							"key": "code",
+							"value": "Средняя"
+						},
+						{
+							"key": "oilfieldId",
+							"value": "2"
+						},
+						{
+							"key": "debit",
+							"value": "18"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete oil well id_3",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/oilWell/delete/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oilWell",
+						"delete",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete oilfield id_2",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/oilfield/delete/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oilfield",
+						"delete",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get oil well id_1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/oilWell/get/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oilWell",
+						"get",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get oil wells",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/oilWell/get",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oilWell",
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get oilfields",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/oilfield/get",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oilfield",
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get oilfield id_1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/oilfield/get/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oilfield",
+						"get",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete oil wells",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/oilWell/delete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oilWell",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete oilfields",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/oilfield/delete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oilfield",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
