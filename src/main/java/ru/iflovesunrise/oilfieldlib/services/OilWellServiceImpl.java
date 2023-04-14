@@ -1,6 +1,10 @@
 package ru.iflovesunrise.oilfieldlib.services;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -20,6 +24,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OilWellServiceImpl implements OilWellService {
 
+    private static final Logger LOGGER = LogManager.getLogger(OilWellServiceImpl.class);
+    private static final Marker INVALID_DATA_MARKER = MarkerManager.getMarker("INVALID_DATA_MARKER");
+    private static final Marker INPUT_HISTORY_MARKER = MarkerManager.getMarker("INPUT_HISTORY_MARKER");
     private final OilfieldRepository oilfieldRepository;
     private final OilWellRepository oilWellRepository;
     private final OilfieldLibResponse oilfieldLibResponse = new OilfieldLibResponse();
@@ -44,8 +51,16 @@ public class OilWellServiceImpl implements OilWellService {
     }
 
     @Override
-    public OilfieldLibResponse create(int number, String code, int oilfieldId, Integer debit) {
-        if (number < 0) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Negative number");
+    public OilfieldLibResponse create(Integer number, String code, int oilfieldId, Integer debit) {
+        String invalidNumber = String.valueOf(number == null ? "Invalid number" : number);
+        LOGGER.info(INPUT_HISTORY_MARKER, invalidNumber.concat("; ")
+                .concat(code == null ? "Code: ***" : code).concat("; ")
+                .concat(String.valueOf(oilfieldId)).concat("; ")
+                .concat(debit == null ? "Debit: ***" : String.valueOf(debit)));
+        if (number == null || number < 0) {
+            LOGGER.info(INVALID_DATA_MARKER, invalidNumber);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid number");
+        }
         Optional<Oilfield> oilfieldOptional = oilfieldRepository.findById(oilfieldId);
         if (oilfieldOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Oilfield id "
@@ -69,22 +84,26 @@ public class OilWellServiceImpl implements OilWellService {
 
     @Override
     public OilfieldLibResponse update(int id, Integer number, String code, Integer debit) {
-        Optional<OilWell> oilWellOptional = oilWellRepository.findById(id);
-        if (oilWellOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Oil well not found");
-        OilWell oilWell = oilWellOptional.get();
-        oilfieldLibResponse.setResult("Oil well №".concat(String.valueOf(oilWell.getNumber()))
-                .concat(" is updated"));
-        if (number != null) oilWell.setNumber(Math.abs(number));
-        if (code != null) oilWell.setCode(code);
-        if (debit != null) {
-            oilWell.setDebit(Math.abs(debit));
-            oilWell.setActive(Math.abs(debit) > 0);
+        try {
+            Optional<OilWell> oilWellOptional = oilWellRepository.findById(id);
+            if (oilWellOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Oil well not found");
+            OilWell oilWell = oilWellOptional.get();
+            oilfieldLibResponse.setResult("Oil well №".concat(String.valueOf(oilWell.getNumber()))
+                    .concat(" is updated"));
+            if (number != null) oilWell.setNumber(Math.abs(number));
+            if (code != null) oilWell.setCode(code);
+            if (debit != null) {
+                oilWell.setDebit(Math.abs(debit));
+                oilWell.setActive(Math.abs(debit) > 0);
+            }
+            oilWellRepository.save(oilWell);
+            Oilfield oilfield = oilWell.getOilfield();
+            updateOilfieldInfo(oilfield);
+            oilfieldLibResponse.setObjects(Collections.singletonList(oilWell));
+        } catch (Exception ex) {
+            LOGGER.error(ex);
         }
-        oilWellRepository.save(oilWell);
-        Oilfield oilfield = oilWell.getOilfield();
-        updateOilfieldInfo(oilfield);
-        oilfieldLibResponse.setObjects(Collections.singletonList(oilWell));
-        return null;
+        return oilfieldLibResponse;
     }
 
     @Override

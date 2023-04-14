@@ -1,6 +1,10 @@
 package ru.iflovesunrise.oilfieldlib.services;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,7 +22,9 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class OilfieldServiceImpl implements OilfieldService {
-
+    private static final Logger LOGGER = LogManager.getLogger(OilfieldServiceImpl.class);
+    private static final Marker INVALID_DATA_MARKER = MarkerManager.getMarker("INVALID_DATA_MARKER");
+    private static final Marker INPUT_HISTORY_MARKER = MarkerManager.getMarker("INPUT_HISTORY_MARKER");
     private final OilfieldRepository oilfieldRepository;
     private final OilfieldLibResponse oilfieldLibResponse = new OilfieldLibResponse();
     private static final String DATE_REGEX = "^\\d{4}-\\d{2}-\\d{2}$";
@@ -45,6 +51,8 @@ public class OilfieldServiceImpl implements OilfieldService {
 
     @Override
     public OilfieldLibResponse create(String name, String foundationDate) {
+        LOGGER.info(INPUT_HISTORY_MARKER, "input ".concat(name == null ? "Name: ***" : name).concat("; ")
+                .concat(foundationDate == null ? "Date: ***" : foundationDate));
         if (name == null || name.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The name cannot be empty");
         }
@@ -56,6 +64,7 @@ public class OilfieldServiceImpl implements OilfieldService {
         Oilfield oilfield = new Oilfield();
         oilfield.setName(name.trim());
         if (foundationDate != null && !foundationDate.matches(DATE_REGEX)) {
+            LOGGER.info(INVALID_DATA_MARKER, "Invalid date format: ".concat(foundationDate));
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid date format. Example: 2000-12-30");
         }
         if(foundationDate != null) oilfield.setFoundationDate(LocalDate.parse(foundationDate));

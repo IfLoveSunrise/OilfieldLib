@@ -8,7 +8,7 @@ public interface OilWellService {
 
     OilfieldLibResponse getById(int id);
 
-    OilfieldLibResponse create(int number, String code, int oilfieldId, Integer debit);
+    OilfieldLibResponse create(Integer number, String code, int oilfieldId, Integer debit);
 
     OilfieldLibResponse update(int id, Integer number, String code, Integer debit);
 
