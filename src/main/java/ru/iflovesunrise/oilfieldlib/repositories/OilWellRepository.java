@@ -7,6 +7,6 @@ import ru.iflovesunrise.oilfieldlib.model.OilWell;
 
 @Repository
 public interface OilWellRepository extends JpaRepository<OilWell, Integer> {
-    @Query(value = "SELECT COUNT(debit) FROM oil_well WHERE oilfield_id = :oilfieldId", nativeQuery = true)
+    @Query(value = "SELECT SUM(debit) FROM oil_well WHERE oilfield_id = :oilfieldId", nativeQuery = true)
     long extentOfProductionByOilfieldId(int oilfieldId);
 }
