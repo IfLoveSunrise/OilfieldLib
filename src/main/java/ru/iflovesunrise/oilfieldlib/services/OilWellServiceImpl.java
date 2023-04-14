@@ -77,7 +77,10 @@ public class OilWellServiceImpl implements OilWellService {
         if (debit != null) {
             oilWell.setDebit(Math.abs(debit));
             oilWell.setActive(Math.abs(debit) > 0);
-        } else oilWell.setActive(false);
+        } else {
+            oilWell.setDebit(0);
+            oilWell.setActive(false);
+        }
         oilWellRepository.save(oilWell);
         updateOilfieldInfo(oilfield);
         oilfieldLibResponse.setResult("Created");
