@@ -14,4 +14,5 @@ public class OilfieldLibResponse {
     private String result;
 
     private List<Object> objects;
+
 }

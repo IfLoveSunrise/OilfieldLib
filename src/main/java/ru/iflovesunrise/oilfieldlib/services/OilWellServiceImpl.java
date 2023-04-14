@@ -29,9 +29,10 @@ public class OilWellServiceImpl implements OilWellService {
     private static final Marker INPUT_HISTORY_MARKER = MarkerManager.getMarker("INPUT_HISTORY_MARKER");
     private final OilfieldRepository oilfieldRepository;
     private final OilWellRepository oilWellRepository;
-    private final OilfieldLibResponse oilfieldLibResponse = new OilfieldLibResponse();
+    private OilfieldLibResponse oilfieldLibResponse;
     @Override
     public OilfieldLibResponse getAll() {
+        oilfieldLibResponse = new OilfieldLibResponse();
         List<OilWell> oilWells = oilWellRepository.findAll();
         if (oilWells.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Oil wells have not been created");
@@ -43,6 +44,7 @@ public class OilWellServiceImpl implements OilWellService {
 
     @Override
     public OilfieldLibResponse getById(int id) {
+        oilfieldLibResponse = new OilfieldLibResponse();
         Optional<OilWell> oilWellOptional = oilWellRepository.findById(id);
         if (oilWellOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         oilfieldLibResponse.setResult("Oil well found");
@@ -52,6 +54,7 @@ public class OilWellServiceImpl implements OilWellService {
 
     @Override
     public OilfieldLibResponse create(Integer number, String code, int oilfieldId, Integer debit) {
+        oilfieldLibResponse = new OilfieldLibResponse();
         String invalidNumber = String.valueOf(number == null ? "Invalid number" : number);
         LOGGER.info(INPUT_HISTORY_MARKER, invalidNumber.concat("; ")
                 .concat(code == null ? "Code: ***" : code).concat("; ")
@@ -84,18 +87,19 @@ public class OilWellServiceImpl implements OilWellService {
 
     @Override
     public OilfieldLibResponse update(int id, Integer number, String code, Integer debit) {
+        oilfieldLibResponse = new OilfieldLibResponse();
         Optional<OilWell> oilWellOptional = oilWellRepository.findById(id);
         if (oilWellOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Oil well not found");
+        OilWell oilWell = oilWellOptional.get();
+        int previousNumber = oilWell.getNumber();
+
+        if (number != null) oilWell.setNumber(Math.abs(number));
+        if (code != null) oilWell.setCode(code);
+        if (debit != null) {
+            oilWell.setDebit(Math.abs(debit));
+            oilWell.setActive(Math.abs(debit) > 0);
+        }
         try {
-            OilWell oilWell = oilWellOptional.get();
-            oilfieldLibResponse.setResult("Oil well №".concat(String.valueOf(oilWell.getNumber()))
-                    .concat(" is updated"));
-            if (number != null) oilWell.setNumber(Math.abs(number));
-            if (code != null) oilWell.setCode(code);
-            if (debit != null) {
-                oilWell.setDebit(Math.abs(debit));
-                oilWell.setActive(Math.abs(debit) > 0);
-            }
             oilWellRepository.save(oilWell);
             Oilfield oilfield = oilWell.getOilfield();
             updateOilfieldInfo(oilfield);
@@ -103,11 +107,14 @@ public class OilWellServiceImpl implements OilWellService {
         } catch (Exception exampleEx) {
             LOGGER.error(exampleEx);
         }
+        oilfieldLibResponse.setResult("Oil well №".concat(String.valueOf(previousNumber))
+                .concat(" is updated"));
         return oilfieldLibResponse;
     }
 
     @Override
     public OilfieldLibResponse deleteAll() {
+        oilfieldLibResponse = new OilfieldLibResponse();
         oilfieldRepository.deleteAll();
         oilfieldLibResponse.setResult("All oil wells have been removed");
         List<Oilfield> oilfields = oilfieldRepository.findAll();
@@ -117,6 +124,7 @@ public class OilWellServiceImpl implements OilWellService {
 
     @Override
     public OilfieldLibResponse deleteById(int id) {
+        oilfieldLibResponse = new OilfieldLibResponse();
         Optional<OilWell> oilWellOptional = oilWellRepository.findById(id);
         if (oilWellOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Oil well not found");
@@ -131,6 +139,7 @@ public class OilWellServiceImpl implements OilWellService {
     }
 
     private void updateOilfieldInfo(Oilfield oilfield) {
+        oilfieldLibResponse = new OilfieldLibResponse();
         oilfield.setExtentOfProduction(oilWellRepository.extentOfProductionByOilfieldId(oilfield.getId()));
         oilfield.setLastUpdateTime(LocalDateTime.now());
         if (oilfield.getStage().equals(OilfieldStage.PLANNED) && oilfield.getExtentOfProduction() > 0) {

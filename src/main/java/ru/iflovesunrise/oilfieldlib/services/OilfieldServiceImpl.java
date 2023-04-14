@@ -15,9 +15,7 @@ import ru.iflovesunrise.oilfieldlib.repositories.OilfieldRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,11 +24,12 @@ public class OilfieldServiceImpl implements OilfieldService {
     private static final Marker INVALID_DATA_MARKER = MarkerManager.getMarker("INVALID_DATA_MARKER");
     private static final Marker INPUT_HISTORY_MARKER = MarkerManager.getMarker("INPUT_HISTORY_MARKER");
     private final OilfieldRepository oilfieldRepository;
-    private final OilfieldLibResponse oilfieldLibResponse = new OilfieldLibResponse();
+    private OilfieldLibResponse oilfieldLibResponse;
     private static final String DATE_REGEX = "^\\d{4}-\\d{2}-\\d{2}$";
 
     @Override
     public OilfieldLibResponse getAll() {
+        oilfieldLibResponse = new OilfieldLibResponse();
         List<Oilfield> oilfields = oilfieldRepository.findAll();
         if (oilfields.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Oilfields have not been created");
@@ -42,6 +41,7 @@ public class OilfieldServiceImpl implements OilfieldService {
 
     @Override
     public OilfieldLibResponse getById(int id) {
+        oilfieldLibResponse = new OilfieldLibResponse();
         Optional<Oilfield> oilfieldOptional = oilfieldRepository.findById(id);
         if (oilfieldOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         oilfieldLibResponse.setResult("Oilfield found");
@@ -51,6 +51,7 @@ public class OilfieldServiceImpl implements OilfieldService {
 
     @Override
     public OilfieldLibResponse create(String name, String foundationDate) {
+        oilfieldLibResponse = new OilfieldLibResponse();
         LOGGER.info(INPUT_HISTORY_MARKER, "input ".concat(name == null ? "Name: ***" : name).concat("; ")
                 .concat(foundationDate == null ? "Date: ***" : foundationDate));
         if (name == null || name.isEmpty()) {
@@ -79,6 +80,7 @@ public class OilfieldServiceImpl implements OilfieldService {
 
     @Override
     public OilfieldLibResponse update(int id, String name, String foundationDate) {
+        oilfieldLibResponse = new OilfieldLibResponse();
         Optional<Oilfield> oilfieldOptional = oilfieldRepository.findById(id);
         if (oilfieldOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Oilfield not found");
@@ -99,6 +101,7 @@ public class OilfieldServiceImpl implements OilfieldService {
 
     @Override
     public OilfieldLibResponse deleteAll() {
+        oilfieldLibResponse = new OilfieldLibResponse();
         oilfieldRepository.deleteAll();
         oilfieldLibResponse.setResult("All oilfields have been removed");
         return oilfieldLibResponse;
@@ -106,6 +109,7 @@ public class OilfieldServiceImpl implements OilfieldService {
 
     @Override
     public OilfieldLibResponse deleteById(int id) {
+        oilfieldLibResponse = new OilfieldLibResponse();
         Optional<Oilfield> oilfieldOptional = oilfieldRepository.findById(id);
         if (oilfieldOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Oilfield not found");
