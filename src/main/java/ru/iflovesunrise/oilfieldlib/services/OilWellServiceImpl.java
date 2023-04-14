@@ -84,9 +84,9 @@ public class OilWellServiceImpl implements OilWellService {
 
     @Override
     public OilfieldLibResponse update(int id, Integer number, String code, Integer debit) {
+        Optional<OilWell> oilWellOptional = oilWellRepository.findById(id);
+        if (oilWellOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Oil well not found");
         try {
-            Optional<OilWell> oilWellOptional = oilWellRepository.findById(id);
-            if (oilWellOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Oil well not found");
             OilWell oilWell = oilWellOptional.get();
             oilfieldLibResponse.setResult("Oil well №".concat(String.valueOf(oilWell.getNumber()))
                     .concat(" is updated"));
@@ -100,8 +100,8 @@ public class OilWellServiceImpl implements OilWellService {
             Oilfield oilfield = oilWell.getOilfield();
             updateOilfieldInfo(oilfield);
             oilfieldLibResponse.setObjects(Collections.singletonList(oilWell));
-        } catch (Exception ex) {
-            LOGGER.error(ex);
+        } catch (Exception exampleEx) {
+            LOGGER.error(exampleEx);
         }
         return oilfieldLibResponse;
     }
